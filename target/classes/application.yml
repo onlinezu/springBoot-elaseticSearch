@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /elasticSearch
+
+spring:
+  application:
+    name: springBoot-ElasticSearch
+
+ElasticSearch:
+  address: 49.235.234.47
+  port: 9200
