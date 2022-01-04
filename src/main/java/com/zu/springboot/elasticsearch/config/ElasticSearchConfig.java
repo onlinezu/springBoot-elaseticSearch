@@ -20,9 +20,11 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
 
     @Bean
     @Override
+    // 6版本里面是有9200 9300两个端口的，9300是TCP协议进行连接，在es7版本里更加推荐Rest的方式，也就是使用9200端口进行使用
+    // 9300除了与Java之间进行通信之外，还有用于集群之间的心跳监测，所以在Docker部署时，依然开放了9300
     public RestHighLevelClient elasticsearchClient() {
         final ClientConfiguration clientConfiguration = ClientConfiguration.builder().
-                connectedTo(address + ":" +port).build();
+                connectedTo(address + ":" + port).build();
         return RestClients.create(clientConfiguration).rest();
     }
 }
