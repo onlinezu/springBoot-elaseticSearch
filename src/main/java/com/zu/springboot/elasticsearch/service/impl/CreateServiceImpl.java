@@ -2,16 +2,20 @@ package com.zu.springboot.elasticsearch.service.impl;
 
 import com.zu.springboot.elasticsearch.service.CreateService;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 @Slf4j
+@Service
 public class CreateServiceImpl implements CreateService {
 
     // 注入操作es客户端
@@ -53,6 +57,19 @@ public class CreateServiceImpl implements CreateService {
             CreateIndexResponse createIndexResponse = restHighLevelClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
 
             log.info("使用客户端创建对象结果:" + createIndexResponse.isAcknowledged());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete() {
+        try {
+            // 参数1：删除索引对象  参数2：请求配置对象
+            AcknowledgedResponse acknowledgedResponse = restHighLevelClient.indices().
+                    delete(new DeleteIndexRequest("produce"),RequestOptions.DEFAULT);
+
+            log.info("删除索引结果为：" + acknowledgedResponse.isAcknowledged());
         } catch (IOException e) {
             e.printStackTrace();
         }
