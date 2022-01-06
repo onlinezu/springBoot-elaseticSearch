@@ -18,5 +18,5 @@ public interface OperationForDocService {
     void queryAll();
 
     // 根据关键词查询
-    void queryByTerm();
+    void queryByType();
 }

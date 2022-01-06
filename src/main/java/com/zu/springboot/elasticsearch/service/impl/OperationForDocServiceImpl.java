@@ -105,6 +105,7 @@ public class OperationForDocServiceImpl implements OperationForDocService {
         }
     }
 
+    // 查询所有文档
     @Override
     public void queryAll() {
 
@@ -136,12 +137,34 @@ public class OperationForDocServiceImpl implements OperationForDocService {
 
     // 实现关键词查询-term
     @Override
-    public void queryByTerm() {
+    public void queryByType() {
+        // 关键词查询-term
+        query(QueryBuilders.termQuery("description", "这"));
+
+        // 范围查询-range
+        query(QueryBuilders.rangeQuery("price").gt(0).lte(6));
+
+        // 前缀查询-prefix
+        query(QueryBuilders.prefixQuery("description", "这"));
+
+        // 通配符查询-wildcard
+        // ?表示一个字符 *表示多个字符
+        query(QueryBuilders.wildcardQuery("description", "这?"));
+
+        // ids-多个文档id查询
+        query(QueryBuilders.idsQuery().addIds("1").addIds("2").addIds("3"));
+
+        // 多字段查询-multi_match
+        query(QueryBuilders.multiMatchQuery("实际上这个就是个例子").field("title").field("description"));
+        query(QueryBuilders.multiMatchQuery("这就是","title","description"));
+    }
+
+    public void query(QueryBuilder queryBuilder){
         SearchRequest searchRequest = new SearchRequest("produce");
         // 但是指定完索引之后，查询条件是否需要补充
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-        // 查询全部
-        sourceBuilder.query(QueryBuilders.termQuery("description","这"));
+        // 根据不同类型进行查询调用
+        sourceBuilder.query(queryBuilder);
         searchRequest.source(sourceBuilder);
         try {
             SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);

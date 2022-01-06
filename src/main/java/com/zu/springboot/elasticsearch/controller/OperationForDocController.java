@@ -49,8 +49,8 @@ public class OperationForDocController {
         operationForDocService.queryAll();
     }
 
-    @RequestMapping(value = "/queryByTerm", method = RequestMethod.POST)
-    public void queryByTerm(){
-        operationForDocService.queryByTerm();
+    @RequestMapping(value = "/queryByType", method = RequestMethod.POST)
+    public void queryByType(){
+        operationForDocService.queryByType();
     }
 }
