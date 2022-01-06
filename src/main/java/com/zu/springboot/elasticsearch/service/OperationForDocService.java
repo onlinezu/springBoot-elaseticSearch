@@ -11,5 +11,12 @@ public interface OperationForDocService {
     // 删除文档
     void deleteDoc();
 
+    // 根据文档ID查询
     void queryDocById(String id);
+
+    // 查询所有文档
+    void queryAll();
+
+    // 根据关键词查询
+    void queryByTerm();
 }
