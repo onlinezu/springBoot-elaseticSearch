@@ -159,6 +159,7 @@ public class OperationForDocServiceImpl implements OperationForDocService {
         query(QueryBuilders.multiMatchQuery("这就是","title","description"));
     }
 
+    // 公共方法
     public void query(QueryBuilder queryBuilder){
         SearchRequest searchRequest = new SearchRequest("produce");
         // 但是指定完索引之后，查询条件是否需要补充
@@ -177,6 +178,26 @@ public class OperationForDocServiceImpl implements OperationForDocService {
                 log.info("遍历获取的字段结果为：" + documentFields.getSourceAsString());
             }
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 过滤查询
+    @Override
+    public void filterQuery() {
+        // 指定索引
+        SearchRequest searchRequest = new SearchRequest("produce");
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+
+        // 在执行查询所有
+        sourceBuilder.query(QueryBuilders.matchAllQuery()).
+            // term、terms、range、exists、ids
+            // 先把description中带有安的数据过滤出来
+            postFilter(QueryBuilders.termQuery("description", "安"));
+        searchRequest.source(sourceBuilder);
+        try {
+            restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();
         }

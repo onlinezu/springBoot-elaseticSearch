@@ -19,4 +19,7 @@ public interface OperationForDocService {
 
     // 根据关键词查询
     void queryByType();
+
+    // 过滤查询
+    void filterQuery();
 }
